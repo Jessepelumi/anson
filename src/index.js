@@ -1,10 +1,12 @@
 import express from "express";
 import usersRouter from "./routes/users_api.js";
+import productsRouter from "./routes/products_api.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(usersRouter);
+app.use(productsRouter);
 
 const loggingMiddleware = (req, res, next) => {
   console.log(`${req.method} ${req.url}`);

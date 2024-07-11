@@ -1,0 +1,58 @@
+export const users = [
+  {
+    id: 1,
+    firstName: "Jesse",
+    lastName: "Adesina",
+    institution: "Middlesex University",
+    nationality: "Nigerian",
+  },
+  {
+    id: 2,
+    firstName: "Ireoluwa",
+    lastName: "Elemide",
+    institution: "University of Lagos",
+    nationality: "Nigerian",
+  },
+  {
+    id: 3,
+    firstName: "Ipaoluwa",
+    lastName: "Ogunneye",
+    institution: "Middlesex University",
+    nationality: "Nigerian",
+  },
+  {
+    id: 4,
+    firstName: "Kolamide",
+    lastName: "Idowu",
+    institution: "Federal University of Agriculture",
+    nationality: "Nigerian",
+  },
+  {
+    id: 5,
+    firstName: "Emmanuel",
+    lastName: "Lipede",
+    institution: "Caleb University",
+    nationality: "Nigerian",
+  },
+  {
+    id: 6,
+    firstName: "Jadesola",
+    lastName: "Ogunsola",
+    institution: "Federal University of Agriculture",
+    nationality: "Nigerian",
+  },
+  {
+    id: 7,
+    firstName: "Sharon",
+    lastName: "Adesina",
+    institution: "University of Lagos",
+    nationality: "Nigerian",
+  },
+  {
+    id: 8,
+    firstName: "Mosopefoluwa",
+    lastName: "Adesina",
+    institution: "Olabisi Onabanjo University",
+    nationality: "Nigerian",
+  },
+];

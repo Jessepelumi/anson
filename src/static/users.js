@@ -5,6 +5,7 @@ export const users = [
     lastName: "Adesina",
     institution: "Middlesex University",
     nationality: "Nigerian",
+    password: "jesseadesina",
   },
   {
     id: 2,
@@ -12,6 +13,7 @@ export const users = [
     lastName: "Elemide",
     institution: "University of Lagos",
     nationality: "Nigerian",
+    password: "ireoluwaelemide",
   },
   {
     id: 3,
@@ -19,6 +21,7 @@ export const users = [
     lastName: "Ogunneye",
     institution: "Middlesex University",
     nationality: "Nigerian",
+    password: "ipaoluwaogunneye",
   },
   {
     id: 4,
@@ -26,6 +29,7 @@ export const users = [
     lastName: "Idowu",
     institution: "Federal University of Agriculture",
     nationality: "Nigerian",
+    password: "kolamideidowu",
   },
   {
     id: 5,
@@ -33,6 +37,7 @@ export const users = [
     lastName: "Lipede",
     institution: "Caleb University",
     nationality: "Nigerian",
+    password: "emmanuellipede",
   },
   {
     id: 6,
@@ -40,6 +45,7 @@ export const users = [
     lastName: "Ogunsola",
     institution: "Federal University of Agriculture",
     nationality: "Nigerian",
+    password: "jadesolaogunsola",
   },
   {
     id: 7,
@@ -47,6 +53,7 @@ export const users = [
     lastName: "Adesina",
     institution: "University of Lagos",
     nationality: "Nigerian",
+    password: "sharonadesina",
   },
   {
     id: 8,
@@ -54,5 +61,6 @@ export const users = [
     lastName: "Adesina",
     institution: "Olabisi Onabanjo University",
     nationality: "Nigerian",
+    password: "mosopefoluwaadesina",
   },
 ];

@@ -1,26 +1,17 @@
 import express from "express";
-import usersRouter from "./routes/users_api.js";
-import productsRouter from "./routes/products_api.js";
+import routes from "./routes/index.js";
 
 const app = express();
 
 app.use(express.json());
-app.use(usersRouter);
-app.use(productsRouter);
-
-const loggingMiddleware = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-};
-
-app.use(loggingMiddleware);
+app.use(routes);
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.status(200).send("Welcome to Express.js");
-});
-
 app.listen(PORT, () => {
   console.log(`Running server at port ${PORT}`);
+});
+
+app.get("/", (req, res) => {
+  res.status(201).send("Welcome to Express.js server");
 });

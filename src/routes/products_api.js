@@ -22,6 +22,7 @@ router.get("/api/products/:id", (req, res) => {
   } = req;
 
   const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
 
   const selectedProduct = products.find((product) => product.id === parsedId);
   res.status(200).send(selectedProduct);
@@ -42,6 +43,7 @@ router.put("/api/products/:id", (req, res) => {
     params: { id },
   } = req;
   const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
 
   const selectedProductIndex = products.findIndex(
     (product) => product.id === parsedId
@@ -57,6 +59,7 @@ router.patch("/api/products/:id", (req, res) => {
     params: { id },
   } = req;
   const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
 
   const selectedProductIndex = products.findIndex(
     (product) => product.id === parsedId
@@ -74,6 +77,7 @@ router.delete("/api/products/:id", (req, res) => {
     params: { id },
   } = req;
   const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
 
   const selectedProductIndex = products.findIndex(
     (product) => product.id === parsedId

@@ -2,20 +2,20 @@ import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema({
   username: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: true,
     unique: true,
   },
   firstName: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: true,
   },
-  lastName: mongoose.Schema.Types.String,
-  phoneNumber: mongoose.Schema.Types.Number,
-  skills: mongoose.Schema.Types.Array,
-  nationality: mongoose.Schema.Types.String,
+  lastName: String,
+  phoneNumber: String,
+  skills: { type: [String] },
+  nationality: String,
   password: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: true,
   },
 });

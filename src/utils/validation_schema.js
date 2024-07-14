@@ -1,34 +1,42 @@
-export const userValidationSchema = {
+export const newUserValidation = {
+  username: {
+    notEmpty: {
+      errorMessage: "You must enter a username",
+    },
+    isString: {
+      errorMessage: "Username must be a string",
+    },
+  },
   firstName: {
     notEmpty: {
-      errorMessage: "First name cannot be empty",
+      errorMessage: "You must enter your first name",
     },
     isString: {
       errorMessage: "First name must be a string",
     },
   },
   lastName: {
-    notEmpty: {
-      errorMessage: "Last name cannot be empty",
-    },
-    isString: {
-      errorMessage: "Last name must be a string",
-    },
+    optional: true,
   },
-  institution: {
-    notEmpty: {
-      errorMessage: "Institution cannot be empty",
-    },
-    isString: {
-      errorMessage: "Institution must be a string",
-    },
+  phoneNumber: {
+    optional: true,
+  },
+  skills: {
+    optional: true,
   },
   nationality: {
+    optional: true,
+  },
+  password: {
     notEmpty: {
-      errorMessage: "You must input your nationality",
+      errorMessage: "You must enter a password",
     },
     isString: {
-      errorMessage: "Nationality must be a string",
+      errorMessage: "Password must be a string",
+    },
+    isLength: {
+      options: { min: 8, max: 24 },
+      errorMessage: "Password must be between 8 and 24 characters",
     },
   },
 };

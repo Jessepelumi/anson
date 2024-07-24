@@ -1,18 +1,18 @@
 import { Router } from "express";
 import { checkSchema, validationResult, matchedData } from "express-validator";
 import {
-  userValidationSchema,
+  newUserValidation,
   queryValidationSchema,
 } from "../utils/validation_schema.js";
-import { users } from "../static/users.js";
-import { resolveIndexByUserId } from "../utils/middlewares.js";
+import { User } from "../mongoose/schema/users.js";
+import { hashPassword } from "../utils/helpers.js";
 
 const router = Router();
 
 router.get(
   "/api/users",
   checkSchema(queryValidationSchema, ["query"]),
-  (req, res) => {
+  async (req, res) => {
     const result = validationResult(req);
 
     if (!result.isEmpty())
@@ -20,61 +20,110 @@ router.get(
 
     const { filter, value } = matchedData(req);
 
-    if (filter && value) {
-      const filteredUsers = users.filter((user) =>
-        user[filter]?.includes(value)
-      );
-      return res.status(200).send(filteredUsers);
-    }
+    try {
+      if (filter && value) {
+        const filteredUsers = await User.find({
+          [filter]: new RegExp(value, "i"),
+        });
+        return res.status(200).send(filteredUsers);
+      }
 
-    return res.status(200).send(users);
+      const allUsers = await User.find({});
+      return res.status(200).send(allUsers);
+    } catch (error) {
+      return res.status(500).send({ error: "Error fetching users" });
+    }
   }
 );
 
-router.get("/api/users/:id", resolveIndexByUserId, (req, res) => {
-  const { findUserIndex } = req;
+router.get("/api/users/:username", async (req, res) => {
+  const { username } = req.params;
 
-  const singleUser = users[findUserIndex];
+  const singleUser = await User.findOne({ username });
   if (!singleUser) return res.sendStatus(404);
   return res.status(200).send(singleUser);
 });
 
 router.post(
   "/api/users",
-  checkSchema(userValidationSchema, ["body"]),
-  (req, res) => {
+  checkSchema(newUserValidation, ["body"]),
+  async (req, res) => {
     const result = validationResult(req);
-
     if (!result.isEmpty())
       return res.status(400).send({ error: result.array() });
 
     const data = matchedData(req);
-    const newUser = { id: users[users.length - 1].id + 1, ...data };
-    users.push(newUser);
-    res.status(201).send(newUser);
+    data.password = hashPassword(data.password);
+
+    const newUser = new User(data);
+    try {
+      const savedUser = await newUser.save();
+      return res.status(201).send(savedUser);
+    } catch (error) {
+      console.log(error);
+      return res.sendStatus(400);
+    }
   }
 );
 
-router.put("/api/users/:id", resolveIndexByUserId, (req, res) => {
-  const { body, findUserIndex } = req;
+router.put("/api/users/:username", async (req, res) => {
+  const { username } = req.params;
+  const updates = req.body;
 
-  const parsedId = users[findUserIndex].id;
-  users[findUserIndex] = { id: parsedId, ...body };
-  return res.sendStatus(200);
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).send("User not found");
+
+    if (updates.password) {
+      updates.password = hashPassword(updates.password);
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { username },
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).send(updatedUser);
+  } catch (error) {
+    return res.status(500).send("Error updating user");
+  }
 });
 
-router.patch("/api/users/:id", resolveIndexByUserId, (req, res) => {
-  const { body, findUserIndex } = req;
+router.patch("/api/users/:username", async (req, res) => {
+  const { username } = req.params;
+  const updates = req.body;
 
-  users[findUserIndex] = { ...users[findUserIndex], ...body };
-  return res.sendStatus(200);
+  try {
+    let user = await User.findOne({ username });
+    if (!user) return res.status(404).send("User not found");
+
+    if (updates.password) {
+      updates.password = hashPassword(updates.password);
+    }
+
+    user = await User.findOneAndUpdate(
+      { username },
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).send(user);
+  } catch (error) {
+    return res.status(500).send("Error updating user");
+  }
 });
 
-router.delete("/api/users/:id", resolveIndexByUserId, (req, res) => {
-  const { findUserIndex } = req;
+router.delete("/api/users/:username", async (req, res) => {
+  const { username } = req.params;
 
-  users.splice(findUserIndex, 1);
-  return res.sendStatus(200);
+  try {
+    const deletedUser = await User.findOneAndDelete({ username });
+    if (!deletedUser) return res.status(404).send("User not found");
+    return res.status(200).send("User deleted successfully");
+  } catch (error) {
+    return res.status(500).send("Error deleting user");
+  }
 });
 
 export default router;

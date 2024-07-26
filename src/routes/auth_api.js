@@ -1,11 +1,12 @@
 import { Router } from "express";
 import "../strategies/local_strategy.js";
+//import "../strategies/discord_strategy.js";
 import passport from "passport";
 
 const router = Router();
 
 router.post("/api/auth", passport.authenticate("local"), (req, res) => {
-  res.sendStatus(201);
+  res.sendStatus(200);
 });
 
 router.get("/api/auth/status", (req, res) => {
@@ -20,5 +21,14 @@ router.post("/api/auth/logout", (req, res) => {
     res.sendStatus(200);
   });
 });
+
+// router.get("/api/auth/discord", passport.authenticate("discord"));
+// router.get(
+//   "/api/auth/discord/redirect",
+//   passport.authenticate("discord"),
+//   (req, res) => {
+//     res.sendStatus(200);
+//   }
+// );
 
 export default router;

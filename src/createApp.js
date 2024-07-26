@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
+import mongoose from "mongoose";
 
 export function createApp() {
   const app = express();

@@ -6,6 +6,10 @@ import {
 } from "../utils/validation_schema.js";
 import { User } from "../mongoose/schema/users.js";
 import { hashPassword } from "../utils/helpers.js";
+import {
+  createUserHandler,
+  getUsersByUsernameHandler,
+} from "../handlers/users_api.js";
 
 const router = Router();
 
@@ -36,34 +40,12 @@ router.get(
   }
 );
 
-router.get("/api/users/:username", async (req, res) => {
-  const { username } = req.params;
-
-  const singleUser = await User.findOne({ username });
-  if (!singleUser) return res.sendStatus(404);
-  return res.status(200).send(singleUser);
-});
+router.get("/api/users/:username", getUsersByUsernameHandler);
 
 router.post(
   "/api/users",
   checkSchema(newUserValidation, ["body"]),
-  async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty())
-      return res.status(400).send({ error: result.array() });
-
-    const data = matchedData(req);
-    data.password = hashPassword(data.password);
-
-    const newUser = new User(data);
-    try {
-      const savedUser = await newUser.save();
-      return res.status(201).send(savedUser);
-    } catch (error) {
-      console.log(error);
-      return res.sendStatus(400);
-    }
-  }
+  createUserHandler
 );
 
 router.put("/api/users/:username", async (req, res) => {
